@@ -40,13 +40,13 @@ public class DomPlantBuilder {
             plant.setName("Default Plant");
         }
 
-        String plantSoil = getElementTextContent(plantElement, SOIL.getValue());
+        String plantSoil = getValueFromElement(plantElement, SOIL.getValue());
         for (Soil soil : Soil.values()) {
             if (soil.name().equalsIgnoreCase(plantSoil)) {
                 plant.setSoil(Soil.valueOf(toUpperCase(plantSoil)));
             }
         }
-        String plantOrigin = getElementTextContent(plantElement, ORIGIN.getValue());
+        String plantOrigin = getValueFromElement(plantElement, ORIGIN.getValue());
         for (Origin origin : Origin.values()) {
             if (origin.name().equalsIgnoreCase(plantOrigin)) {
                 plant.setOrigin(Origin.valueOf(toUpperCase(plantOrigin)));
@@ -54,13 +54,13 @@ public class DomPlantBuilder {
         }
 
         Element vParameter = (Element) plantElement.getElementsByTagName(VISUAL_PARAMETER.getValue()).item(0);
-        String stalkColor = getElementTextContent(vParameter, STALK_COLOR.getValue());
+        String stalkColor = getValueFromElement(vParameter, STALK_COLOR.getValue());
         for (Color color : Color.values()) {
             if (color.name().equalsIgnoreCase(stalkColor)) {
                 visualParameter.setStalkColor(Color.valueOf(toUpperCase(stalkColor)));
             }
         }
-        String leafColor = getElementTextContent(vParameter, LEAF_COLOR.getValue());
+        String leafColor = getValueFromElement(vParameter, LEAF_COLOR.getValue());
         for (Color color : Color.values()) {
             if (color.name().equalsIgnoreCase(stalkColor)) {
                 visualParameter.setLeafColor(Color.valueOf(toUpperCase(leafColor)));
@@ -74,7 +74,7 @@ public class DomPlantBuilder {
         growingTips.setPhotophilous(getBooleanFromElement(gTips, IS_PHOTOPHILOUS.getValue()));
         growingTips.setWaterAmount(getIntFromElement(gTips, WATER_AMOUNT.getValue()));
 
-        String reproductionPlant = getElementTextContent(plantElement, REPRODUCTION.getValue());
+        String reproductionPlant = getValueFromElement(plantElement, REPRODUCTION.getValue());
         for (Reproduction reproduction : Reproduction.values()) {
             if (reproduction.name().equalsIgnoreCase(reproductionPlant)) {
                 plant.setReproduction(Reproduction.valueOf(toUpperCase(reproductionPlant)));
@@ -95,10 +95,10 @@ public class DomPlantBuilder {
             plant = new Flower();
             visualParameter = new VisualParameter();
             growingTips = new GrowingTips();
-            int petalsQuantity = Integer.parseInt(getElementTextContent(plantElement, PETALS_QUANTITY.getValue()));
+            int petalsQuantity = Integer.parseInt(getValueFromElement(plantElement, PETALS_QUANTITY.getValue()));
             ((Flower) plant).setPetalsQuantity(petalsQuantity);
 
-            String flowerSize = getElementTextContent(plantElement, SIZE.getValue());
+            String flowerSize = getValueFromElement(plantElement, SIZE.getValue());
             if (flowerSize == null) {
                 throw new NullPointerException("Size of the flower can not be null");
             }
@@ -116,7 +116,7 @@ public class DomPlantBuilder {
             growingTips = new GrowingTips();
             ((Vegetable) plant).setWeight(getDoubleFromElement(plantElement, WEIGHT.getValue()));
 
-            String vegetableSeason = getElementTextContent(plantElement, SEASON.getValue());
+            String vegetableSeason = getValueFromElement(plantElement, SEASON.getValue());
             if (vegetableSeason == null) {
                 throw new NullPointerException("Vegetable Season can not be null");
             }
@@ -140,7 +140,7 @@ public class DomPlantBuilder {
      * @param elementName name of that element
      * @return text from the nodeList depending on it is name.
      */
-    private String getElementTextContent(Element element, String elementName) {
+    private String getValueFromElement(Element element, String elementName) {
         NodeList nodeList = element.getElementsByTagName(elementName);
         Node node = nodeList.item(0);
         return node.getTextContent();
@@ -156,7 +156,7 @@ public class DomPlantBuilder {
      * @return boolean from string
      */
     private boolean getBooleanFromElement(Element element, String elementName) {
-        return Boolean.parseBoolean(getElementTextContent(element, elementName));
+        return Boolean.parseBoolean(getValueFromElement(element, elementName));
     }
 
     /**
@@ -166,7 +166,7 @@ public class DomPlantBuilder {
      * @return double value from String
      */
     private double getDoubleFromElement(Element element, String elementName) {
-        return Double.parseDouble(getElementTextContent(element, elementName));
+        return Double.parseDouble(getValueFromElement(element, elementName));
     }
 
     /**
@@ -176,7 +176,7 @@ public class DomPlantBuilder {
      * @return int value from String
      */
     private int getIntFromElement(Element element, String elementName) {
-        return Integer.parseInt(getElementTextContent(element, elementName));
+        return Integer.parseInt(getValueFromElement(element, elementName));
     }
 
     // Experimental method to try to check if we can use enum as parameter
