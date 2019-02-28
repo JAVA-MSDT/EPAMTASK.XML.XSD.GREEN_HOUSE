@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="/xml/plants.xsd"
+        targetNamespace="/xml/plants.xsd"
+        elementFormDefault="qualified">
+
+    <element name="plants">
+        <complexType>
+            <sequence>
+                <element ref="tns:plant"
+                         minOccurs="2"
+                         maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="plant" type="tns:Plant" abstract="true"/>
+    <element name="flower" type="tns:Flower" substitutionGroup="tns:plant"/>
+    <element name="vegetable" type="tns:Vegetable" substitutionGroup="tns:plant"/>
+
+    <complexType name="Plant">
+        <sequence>
+            <element name="soil" type="tns:Soil"/>
+            <element name="origin" type="tns:Origin"/>
+            <element name="visual-parameter" type="tns:VisualParameter"/>
+            <element name="growing-tips" type="tns:GrowingTips"/>
+            <element name="reproduction" type="tns:Reproduction"/>
+        </sequence>
+        <attribute name="id" type="positiveInteger" use="required"/>
+        <attribute name="name" type="string" use="optional" default="Plant"/>
+    </complexType>
+
+    <complexType name="Flower">
+        <complexContent>
+            <extension base="tns:Plant">
+                <sequence>
+                    <element name="petals-quantity" type="positiveInteger"/>
+                    <element name="size" type="tns:Size"/>
+                    <element name="is-poison" type="boolean"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="Vegetable">
+        <complexContent>
+            <extension base="tns:Plant">
+                <sequence>
+                    <element name="weight" type="double"/>
+                    <element name="season" type="tns:Season"/>
+                    <element name="is-sweet" type="boolean" default="false"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <!-- internal class -->
+
+    <complexType name="GrowingTips">
+        <sequence>
+            <element name="temperature" type="double"/>
+            <element name="is-photophilous" type="boolean" default="true"/>
+            <element name="water-amount" type="int"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="VisualParameter">
+        <sequence>
+            <element name="stalk-color" type="tns:Color"/>
+            <element name="leaf-color" type="tns:Color"/>
+            <element name="average-size" type="double"/>
+        </sequence>
+    </complexType>
+
+
+    <!-- Enumeration Part -->
+
+    <simpleType name="Color">
+        <restriction base="string">
+            <enumeration value="white"/>
+            <enumeration value="black"/>
+            <enumeration value="red"/>
+            <enumeration value="green"/>
+            <enumeration value="yellow"/>
+            <enumeration value="orange"/>
+            <enumeration value="blue"/>
+            <enumeration value="rose"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Origin">
+        <restriction base="string">
+            <enumeration value="europe"/>
+            <enumeration value="asia"/>
+            <enumeration value="africa"/>
+            <enumeration value="north america"/>
+            <enumeration value="south america"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Reproduction">
+        <restriction base="string">
+            <enumeration value="leaves"/>
+            <enumeration value="cutting"/>
+            <enumeration value="seed"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Season">
+        <restriction base="string">
+            <enumeration value="summer"/>
+            <enumeration value="winter"/>
+            <enumeration value="autumn"/>
+            <enumeration value="spring"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Size">
+        <restriction base="string">
+            <enumeration value="small"/>
+            <enumeration value="medium"/>
+            <enumeration value="large"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Soil">
+        <restriction base="string">
+            <enumeration value="podzol"/>
+            <enumeration value="ground"/>
+            <enumeration value="sod prodzolic"/>
+        </restriction>
+    </simpleType>
+
+</schema>

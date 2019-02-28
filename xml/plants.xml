@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plants xsi:noNamespaceSchemaLocation="/xml/plants.xsd"
+        xmlns="/xml/plants.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+
+    <flower id="1" name="Rose">
+        <soil>podzol</soil>
+        <origin>africa</origin>
+        <visual-parameter>
+            <stalk-color>rose</stalk-color>
+            <leaf-color>green</leaf-color>
+            <average-size>1.5</average-size>
+        </visual-parameter>
+        <growing-tips>
+            <temperature>20</temperature>
+            <is-photophilous>true</is-photophilous>
+            <water-amount>4</water-amount>
+        </growing-tips>
+        <reproduction>seed</reproduction>
+        <petals-quantity>20</petals-quantity>
+        <size>small</size>
+        <is-poison>false</is-poison>
+    </flower>
+
+    <vegetable id="2" name="Carrot">
+        <soil>ground</soil>
+        <origin>europe</origin>
+        <visual-parameter>
+            <stalk-color>yellow</stalk-color>
+            <leaf-color>green</leaf-color>
+            <average-size>5</average-size>
+        </visual-parameter>
+        <growing-tips>
+            <temperature>30</temperature>
+            <is-photophilous>false</is-photophilous>
+            <water-amount>6</water-amount>
+        </growing-tips>
+        <reproduction>cutting</reproduction>
+        <weight>50</weight>
+        <season>summer</season>
+        <is-sweet>true</is-sweet>
+    </vegetable>
+</plants>
