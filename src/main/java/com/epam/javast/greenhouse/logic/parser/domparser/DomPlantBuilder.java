@@ -3,6 +3,7 @@ package com.epam.javast.greenhouse.logic.parser.domparser;
 import com.epam.javast.greenhouse.model.api.Plant;
 import com.epam.javast.greenhouse.model.entity.*;
 import com.epam.javast.greenhouse.model.enumeration.*;
+import com.epam.javast.greenhouse.util.helper.StringFromEnum;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
@@ -41,45 +42,27 @@ public class DomPlantBuilder {
         }
 
         String plantSoil = getValueFromElement(plantElement, SOIL.getValue());
-        for (Soil soil : Soil.values()) {
-            if (soil.name().equalsIgnoreCase(plantSoil)) {
-                plant.setSoil(Soil.valueOf(toUpperCase(plantSoil)));
-            }
-        }
+        plant.setSoil(Soil.valueOf(StringFromEnum.getString(Soil.values(), plantSoil)));
+
         String plantOrigin = getValueFromElement(plantElement, ORIGIN.getValue());
-        for (Origin origin : Origin.values()) {
-            if (origin.name().equalsIgnoreCase(plantOrigin)) {
-                plant.setOrigin(Origin.valueOf(toUpperCase(plantOrigin)));
-            }
-        }
+        plant.setOrigin(Origin.valueOf(StringFromEnum.getString(Origin.values(), plantOrigin)));
 
         Element vParameter = (Element) plantElement.getElementsByTagName(VISUAL_PARAMETER.getValue()).item(0);
         String stalkColor = getValueFromElement(vParameter, STALK_COLOR.getValue());
-        for (Color color : Color.values()) {
-            if (color.name().equalsIgnoreCase(stalkColor)) {
-                visualParameter.setStalkColor(Color.valueOf(toUpperCase(stalkColor)));
-            }
-        }
-        String leafColor = getValueFromElement(vParameter, LEAF_COLOR.getValue());
-        for (Color color : Color.values()) {
-            if (color.name().equalsIgnoreCase(stalkColor)) {
-                visualParameter.setLeafColor(Color.valueOf(toUpperCase(leafColor)));
-            }
-        }
+        visualParameter.setStalkColor(Color.valueOf(StringFromEnum.getString(Color.values(), stalkColor)));
 
-        visualParameter.setAverageSize(getDoubleFromElement(vParameter, AVERAGE_SIZE.getValue()));
+        String leafColor = getValueFromElement(vParameter, LEAF_COLOR.getValue());
+        visualParameter.setLeafColor(Color.valueOf(StringFromEnum.getString(Color.values(), leafColor)));
+
+        visualParameter.setAverageSize(Double.parseDouble(getValueFromElement(vParameter, AVERAGE_SIZE.getValue())));
 
         Element gTips = (Element) plantElement.getElementsByTagName(GROWING_TIPS.getValue()).item(0);
-        growingTips.setTemperature(getDoubleFromElement(gTips, TEMPERATURE.getValue()));
-        growingTips.setPhotophilous(getBooleanFromElement(gTips, IS_PHOTOPHILOUS.getValue()));
-        growingTips.setWaterAmount(getIntFromElement(gTips, WATER_AMOUNT.getValue()));
+        growingTips.setTemperature(Double.parseDouble(getValueFromElement(gTips, TEMPERATURE.getValue())));
+        growingTips.setPhotophilous(Boolean.parseBoolean(getValueFromElement(gTips, IS_PHOTOPHILOUS.getValue())));
+        growingTips.setWaterAmount(Integer.parseInt(getValueFromElement(gTips, WATER_AMOUNT.getValue())));
 
         String reproductionPlant = getValueFromElement(plantElement, REPRODUCTION.getValue());
-        for (Reproduction reproduction : Reproduction.values()) {
-            if (reproduction.name().equalsIgnoreCase(reproductionPlant)) {
-                plant.setReproduction(Reproduction.valueOf(toUpperCase(reproductionPlant)));
-            }
-        }
+        plant.setReproduction(Reproduction.valueOf(StringFromEnum.getString(Reproduction.values(), reproductionPlant)));
 
         return plant;
     }
@@ -95,40 +78,25 @@ public class DomPlantBuilder {
             plant = new Flower();
             visualParameter = new VisualParameter();
             growingTips = new GrowingTips();
-            int petalsQuantity = Integer.parseInt(getValueFromElement(plantElement, PETALS_QUANTITY.getValue()));
-            ((Flower) plant).setPetalsQuantity(petalsQuantity);
+
+            ((Flower) plant).setPetalsQuantity(Integer.parseInt(getValueFromElement(plantElement, PETALS_QUANTITY.getValue())));
 
             String flowerSize = getValueFromElement(plantElement, SIZE.getValue());
-            if (flowerSize == null) {
-                throw new NullPointerException("Size of the flower can not be null");
-            }
-            for (Size s : Size.values()) {
-                if (s.name().equalsIgnoreCase(flowerSize)) {
-                    ((Flower) plant).setSize(Size.valueOf(toUpperCase(flowerSize)));
-                    break;
-                }
-            }
-            ((Flower) plant).setPoison(getBooleanFromElement(plantElement, IS_POISON.getValue()));
+            ((Flower) plant).setSize(Size.valueOf(StringFromEnum.getString(Size.values(), flowerSize)));
+
+            ((Flower) plant).setPoison(Boolean.parseBoolean(getValueFromElement(plantElement, IS_POISON.getValue())));
 
         } else if (VEGETABLE.getValue().equals(plantElement.getTagName())) {
             plant = new Vegetable();
             visualParameter = new VisualParameter();
             growingTips = new GrowingTips();
-            ((Vegetable) plant).setWeight(getDoubleFromElement(plantElement, WEIGHT.getValue()));
+
+            ((Vegetable) plant).setWeight(Double.parseDouble(getValueFromElement(plantElement, WEIGHT.getValue())));
 
             String vegetableSeason = getValueFromElement(plantElement, SEASON.getValue());
-            if (vegetableSeason == null) {
-                throw new NullPointerException("Vegetable Season can not be null");
-            }
+            ((Vegetable) plant).setSeason(Season.valueOf(StringFromEnum.getString(Season.values(), vegetableSeason)));
 
-            for (Season season : Season.values()) {
-                if (season.name().equalsIgnoreCase(vegetableSeason)) {
-
-                    ((Vegetable) plant).setSeason(Season.valueOf(toUpperCase(vegetableSeason)));
-                }
-            }
-
-            ((Vegetable) plant).setSweet(getBooleanFromElement(plantElement, IS_SWEET.getValue()));
+            ((Vegetable) plant).setSweet(Boolean.parseBoolean(getValueFromElement(plantElement, IS_SWEET.getValue())));
         }
         plant.setVisualParameter(visualParameter);
         plant.setGrowingTips(growingTips);
@@ -145,58 +113,4 @@ public class DomPlantBuilder {
         Node node = nodeList.item(0);
         return node.getTextContent();
     }
-
-
-     // Helper Methods..............
-
-    /**
-     *
-     * @param element from the nodeList
-     * @param elementName string to parse it to boolean value
-     * @return boolean from string
-     */
-    private boolean getBooleanFromElement(Element element, String elementName) {
-        return Boolean.parseBoolean(getValueFromElement(element, elementName));
-    }
-
-    /**
-     *
-     * @param element from the nodeList
-     * @param elementName string to parse it to Double value
-     * @return double value from String
-     */
-    private double getDoubleFromElement(Element element, String elementName) {
-        return Double.parseDouble(getValueFromElement(element, elementName));
-    }
-
-    /**
-     *
-     * @param element from the nodeList
-     * @param elementName string to parse it to int value
-     * @return int value from String
-     */
-    private int getIntFromElement(Element element, String elementName) {
-        return Integer.parseInt(getValueFromElement(element, elementName));
-    }
-
-    // Experimental method to try to check if we can use enum as parameter
-    private String getColor(String colour) {
-        String col = "" ;
-        for (Color color : Color.values()) {
-            if (color.name().equalsIgnoreCase(colour)) {
-                col = colour;
-            }
-        }
-        return toUpperCase(col);
-    }
-
-    /**
-     *
-     * @param lowerCase string value
-     * @return String to upper case
-     */
-    private String toUpperCase(String lowerCase) {
-        return lowerCase.toUpperCase();
-    }
-
 }
