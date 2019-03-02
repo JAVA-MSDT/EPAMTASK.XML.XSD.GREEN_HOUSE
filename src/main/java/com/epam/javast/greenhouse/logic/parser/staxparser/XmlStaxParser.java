@@ -10,6 +10,7 @@ import com.epam.javast.greenhouse.model.enumeration.*;
 
 import static com.epam.javast.greenhouse.model.enumeration.PlantEnum.*;
 
+import com.epam.javast.greenhouse.util.helper.StringFromEnum;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -50,11 +51,11 @@ public class XmlStaxParser implements XmlParser {
         try {
             inputStream = new FileInputStream(new File(xmlFile));
             streamReader = inputFactory.createXMLStreamReader(inputStream);
-            while (streamReader.hasNext()){
+            while (streamReader.hasNext()) {
                 int type = streamReader.next();
-                if(type == XMLStreamConstants.START_ELEMENT){
+                if (type == XMLStreamConstants.START_ELEMENT) {
                     name = streamReader.getLocalName();
-                    if(findByValue(name) == FLOWER || findByValue(name) == VEGETABLE){
+                    if (findByValue(name) == FLOWER || findByValue(name) == VEGETABLE) {
                         plant = buildPlant(streamReader, name);
                         plantList.add(plant);
                     }
@@ -70,11 +71,11 @@ public class XmlStaxParser implements XmlParser {
 
     public Plant buildPlant(XMLStreamReader reader, String plantType) throws XMLStreamException {
 
-        if(FLOWER.getValue().equalsIgnoreCase(plantType)){
+        if (FLOWER.getValue().equalsIgnoreCase(plantType)) {
             plant = new Flower();
             visualParameter = new VisualParameter();
             growingTips = new GrowingTips();
-        } else if(VEGETABLE.getValue().equalsIgnoreCase(plantType)){
+        } else if (VEGETABLE.getValue().equalsIgnoreCase(plantType)) {
             plant = new Vegetable();
             visualParameter = new VisualParameter();
             growingTips = new GrowingTips();
@@ -83,42 +84,30 @@ public class XmlStaxParser implements XmlParser {
         plant.setId(Integer.parseInt(reader.getAttributeValue(null, ID.getValue())));
         plant.setName(reader.getAttributeValue(null, NAME.getValue()));
 
-        int type;
         String name;
-        while (reader.hasNext()){
-            type = reader.next();
-            switch (type){
+        while (reader.hasNext()) {
+            int type = reader.next();
+            switch (type) {
                 case XMLStreamConstants.START_ELEMENT:
                     name = reader.getLocalName();
-                    switch (findByValue(name.toUpperCase())){
+                    switch (Objects.requireNonNull(findByValue(name))) {
                         case SOIL:
                             valueHolder = getValueFromElement(reader);
-                            for (Soil soil : Soil.values()) {
-                                if (soil.name().equalsIgnoreCase(valueHolder)) {
-                                    plant.setSoil(Soil.valueOf(valueHolder.toUpperCase()));
-                                }
-                            }
+                            plant.setSoil(Soil.valueOf(StringFromEnum.getString(Soil.values(), valueHolder)));
                             break;
                         case ORIGIN:
                             valueHolder = getValueFromElement(reader);
-                            for (Origin origin : Origin.values()) {
-                                if (origin.name().equalsIgnoreCase(valueHolder)) {
-                                    plant.setOrigin(Origin.valueOf(valueHolder.toUpperCase()));
-                                }
-                            }
+                            plant.setOrigin(Origin.valueOf(StringFromEnum.getString(Origin.values(), valueHolder)));
                             break;
                         case VISUAL_PARAMETER:
                             plant.setVisualParameter(getVisualParameter(reader));
                             break;
                         case GROWING_TIPS:
                             plant.setGrowingTips(getGrowingTips(reader));
+                            break;
                         case REPRODUCTION:
                             valueHolder = getValueFromElement(reader);
-                            for (Reproduction reproduction : Reproduction.values()) {
-                                if (reproduction.name().equalsIgnoreCase(valueHolder)) {
-                                    plant.setReproduction(Reproduction.valueOf(valueHolder.toUpperCase()));
-                                }
-                            }
+                            plant.setReproduction(Reproduction.valueOf(StringFromEnum.getString(Reproduction.values(), valueHolder)));
                             break;
                         case PETALS_QUANTITY:
                             valueHolder = getValueFromElement(reader);
@@ -126,13 +115,10 @@ public class XmlStaxParser implements XmlParser {
                             break;
                         case SIZE:
                             valueHolder = getValueFromElement(reader);
-                            for (Size size : Size.values()) {
-                                if (size.name().equalsIgnoreCase(valueHolder)) {
-                                    ((Flower) plant).setSize(Size.valueOf(valueHolder.toUpperCase()));
-                                }
-                            }
+                            ((Flower) plant).setSize(Size.valueOf(StringFromEnum.getString(Size.values(), valueHolder)));
                             break;
-                        case IS_POISON:valueHolder = getValueFromElement(reader);
+                        case IS_POISON:
+                            valueHolder = getValueFromElement(reader);
                             ((Flower) plant).setPoison(Boolean.parseBoolean(valueHolder));
                             break;
                         case WEIGHT:
@@ -141,11 +127,7 @@ public class XmlStaxParser implements XmlParser {
                             break;
                         case SEASON:
                             valueHolder = getValueFromElement(reader);
-                            for (Season season : Season.values()) {
-                                if (season.name().equalsIgnoreCase(valueHolder)) {
-                                    ((Vegetable) plant).setSeason(Season.valueOf(valueHolder.toUpperCase()));
-                                }
-                            }
+                            ((Vegetable) plant).setSeason(Season.valueOf(StringFromEnum.getString(Season.values(), valueHolder)));
                             break;
                         case IS_SWEET:
                             valueHolder = getValueFromElement(reader);
@@ -154,12 +136,12 @@ public class XmlStaxParser implements XmlParser {
                             break;
                     }
                     break;
-                    case XMLStreamConstants.END_ELEMENT:
-                        name = reader.getLocalName();
-                        if(findByValue(name) == FLOWER || findByValue(name) == VEGETABLE){
-                            return plant;
-                        }
-                        break;
+                case XMLStreamConstants.END_ELEMENT:
+                    name = reader.getLocalName();
+                    if (findByValue(name) == FLOWER || findByValue(name) == VEGETABLE) {
+                        return plant;
+                    }
+                    break;
             }
         }
         throw new XMLStreamException("There is no such elements");
@@ -169,12 +151,12 @@ public class XmlStaxParser implements XmlParser {
     private GrowingTips getGrowingTips(XMLStreamReader reader) throws XMLStreamException {
         int type;
         String name;
-        while (reader.hasNext()){
+        while (reader.hasNext()) {
             type = reader.next();
-            switch (type){
+            switch (type) {
                 case XMLStreamConstants.START_ELEMENT:
                     name = reader.getLocalName();
-                    switch (Objects.requireNonNull(findByValue(name.toUpperCase()))){
+                    switch (Objects.requireNonNull(findByValue(name))) {
                         case TEMPERATURE:
                             growingTips.setTemperature(Double.parseDouble(getValueFromElement(reader)));
                             break;
@@ -185,12 +167,12 @@ public class XmlStaxParser implements XmlParser {
                             growingTips.setWaterAmount(Integer.parseInt(getValueFromElement(reader)));
                     }
                     break;
-                    case XMLStreamConstants.END_ELEMENT:
-                        name = reader.getLocalName();
-                        if(findByValue(name.toUpperCase()) == GROWING_TIPS){
-                            return growingTips;
-                        }
-                        break;
+                case XMLStreamConstants.END_ELEMENT:
+                    name = reader.getLocalName();
+                    if (findByValue(name) == GROWING_TIPS) {
+                        return growingTips;
+                    }
+                    break;
             }
         }
         throw new XMLStreamException("there is no such element");
@@ -204,22 +186,14 @@ public class XmlStaxParser implements XmlParser {
             switch (type) {
                 case XMLStreamConstants.START_ELEMENT:
                     name = reader.getLocalName();
-                    switch (Objects.requireNonNull(findByValue(name.toUpperCase()))) {
+                    switch (Objects.requireNonNull(findByValue(name))) {
                         case STALK_COLOR:
                             valueHolder = getValueFromElement(reader);
-                            for (Color color : Color.values()) {
-                                if (color.name().equalsIgnoreCase(valueHolder)) {
-                                    visualParameter.setStalkColor(Color.valueOf(valueHolder.toUpperCase()));
-                                }
-                            }
+                            visualParameter.setStalkColor(Color.valueOf(StringFromEnum.getString(Color.values(), valueHolder)));
                             break;
                         case LEAF_COLOR:
                             valueHolder = getValueFromElement(reader);
-                            for (Color color : Color.values()) {
-                                if (color.name().equalsIgnoreCase(valueHolder)) {
-                                    visualParameter.setLeafColor(Color.valueOf(valueHolder.toUpperCase()));
-                                }
-                            }
+                            visualParameter.setLeafColor(Color.valueOf(StringFromEnum.getString(Color.values(), valueHolder)));
                             break;
                         case AVERAGE_SIZE:
                             visualParameter.setAverageSize(Double.parseDouble(getValueFromElement(reader)));
@@ -228,7 +202,7 @@ public class XmlStaxParser implements XmlParser {
                     break;
                 case XMLStreamConstants.END_ELEMENT:
                     name = reader.getLocalName();
-                    if (findByValue(name.toUpperCase()) == VISUAL_PARAMETER) {
+                    if (findByValue(name) == VISUAL_PARAMETER) {
                         return visualParameter;
                     }
                     break;
@@ -240,7 +214,7 @@ public class XmlStaxParser implements XmlParser {
 
 
     private String getValueFromElement(XMLStreamReader reader) throws XMLStreamException {
-        String text = "" ;
+        String text = "";
         if (reader.hasNext()) {
             reader.next();
             text = reader.getText();

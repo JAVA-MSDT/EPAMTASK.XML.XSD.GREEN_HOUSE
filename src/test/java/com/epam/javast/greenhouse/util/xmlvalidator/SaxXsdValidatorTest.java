@@ -42,7 +42,7 @@ public class SaxXsdValidatorTest {
     }
 
     @Test
-    public void isValidReturnFalse(){
+    public void isInValidReturnFalse(){
         boolean actual = xmlValidator.validate(inValidXmlFilePath, xsdFilePath, language);
 
         Assert.assertFalse(actual);

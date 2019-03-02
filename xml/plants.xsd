@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
-        xmlns:tns="/xml/plants.xsd"
-        targetNamespace="/xml/plants.xsd"
+        xmlns:tns="http://www.example.com/plants"
+        targetNamespace="http://www.example.com/plants"
         elementFormDefault="qualified">
 
     <element name="plants">

@@ -3,11 +3,14 @@ package com.epam.javast.greenhouse.logic.parser.saxparser;
 import com.epam.javast.greenhouse.model.api.Plant;
 import com.epam.javast.greenhouse.model.entity.*;
 import com.epam.javast.greenhouse.model.enumeration.*;
+import com.epam.javast.greenhouse.util.helper.StringFromEnum;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import static com.epam.javast.greenhouse.model.enumeration.PlantEnum.*; /* Importing PlantEnum to clean the code from
+                                                                       Literal Typing each element */
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -38,12 +41,12 @@ public class PlantHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
-        if ("flower".equalsIgnoreCase(localName) || "vegetable".equalsIgnoreCase(localName)) {
-            if ("flower".equalsIgnoreCase(localName)) {
+        if (FLOWER.getValue().equalsIgnoreCase(localName) || VEGETABLE.getValue().equalsIgnoreCase(localName)) {
+            if (FLOWER.getValue().equalsIgnoreCase(localName)) {
                 plant = new Flower();
                 visualParameter = new VisualParameter();
                 growingTips = new GrowingTips();
-            } else if ("vegetable".equalsIgnoreCase(localName)) {
+            } else if (VEGETABLE.getValue().equalsIgnoreCase(localName)) {
                 plant = new Vegetable();
                 visualParameter = new VisualParameter();
                 growingTips = new GrowingTips();
@@ -69,10 +72,10 @@ public class PlantHandler extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        if ("flower".equalsIgnoreCase(localName)) {
+        if (FLOWER.getValue().equalsIgnoreCase(localName)) {
             plantList.add(plant);
         }
-        if("vegetable".equalsIgnoreCase(localName)){
+        if(VEGETABLE.getValue().equalsIgnoreCase(localName)){
             plantList.add(plant);
         }
     }
@@ -83,32 +86,16 @@ public class PlantHandler extends DefaultHandler {
         if (plantEnum != null) {
             switch (plantEnum) {
                 case SOIL:
-                    for (Soil soil : Soil.values()) {
-                        if (soil.name().equalsIgnoreCase(s)) {
-                            plant.setSoil(Soil.valueOf(s.toUpperCase()));
-                        }
-                    }
+                    plant.setSoil(Soil.valueOf(StringFromEnum.getString(Soil.values(), s)));
                     break;
                 case ORIGIN:
-                    for (Origin origin : Origin.values()) {
-                        if (origin.name().equalsIgnoreCase(s)) {
-                            plant.setOrigin(Origin.valueOf(s.toUpperCase()));
-                        }
-                    }
+                    plant.setOrigin(Origin.valueOf(StringFromEnum.getString(Origin.values(), s)));
                     break;
                 case STALK_COLOR:
-                    for (Color color : Color.values()) {
-                        if (color.name().equalsIgnoreCase(s)) {
-                            visualParameter.setStalkColor(Color.valueOf(s.toUpperCase()));
-                        }
-                    }
+                    visualParameter.setStalkColor(Color.valueOf(StringFromEnum.getString(Color.values(), s)));
                     break;
                 case LEAF_COLOR:
-                    for (Color color : Color.values()) {
-                        if (color.name().equalsIgnoreCase(s)) {
-                            visualParameter.setLeafColor(Color.valueOf(s.toUpperCase()));
-                        }
-                    }
+                    visualParameter.setLeafColor(Color.valueOf(StringFromEnum.getString(Color.values(), s)));
                     break;
                 case AVERAGE_SIZE:
                     visualParameter.setAverageSize(Double.parseDouble(s));
@@ -123,21 +110,13 @@ public class PlantHandler extends DefaultHandler {
                     growingTips.setWaterAmount(Integer.parseInt(s));
                     break;
                 case REPRODUCTION:
-                    for (Reproduction reproduction : Reproduction.values()) {
-                        if (reproduction.name().equalsIgnoreCase(s)) {
-                            plant.setReproduction(Reproduction.valueOf(s.toUpperCase()));
-                        }
-                    }
+                    plant.setReproduction(Reproduction.valueOf(StringFromEnum.getString(Reproduction.values(), s)));
                     break;
                 case PETALS_QUANTITY:
                     ((Flower) plant).setPetalsQuantity(Integer.parseInt(s));
                     break;
                 case SIZE:
-                    for (Size size : Size.values()) {
-                        if (size.name().equalsIgnoreCase(s)) {
-                            ((Flower) plant).setSize(Size.valueOf(s.toUpperCase()));
-                        }
-                    }
+                    ((Flower) plant).setSize(Size.valueOf(StringFromEnum.getString(Size.values(), s)));
                     break;
                 case IS_POISON:
                     ((Flower) plant).setPoison(Boolean.parseBoolean(s));
@@ -146,11 +125,7 @@ public class PlantHandler extends DefaultHandler {
                     ((Vegetable) plant).setWeight(Double.parseDouble(s));
                     break;
                 case SEASON:
-                    for (Season season : Season.values()) {
-                        if (season.name().equalsIgnoreCase(s)) {
-                            ((Vegetable) plant).setSeason(Season.valueOf(s.toUpperCase()));
-                        }
-                    }
+                    ((Vegetable) plant).setSeason(Season.valueOf(StringFromEnum.getString(Season.values(), s)));
                     break;
                 case IS_SWEET:
                     ((Vegetable) plant).setSweet(Boolean.parseBoolean(s));

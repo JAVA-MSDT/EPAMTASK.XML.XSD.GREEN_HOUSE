@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plants xsi:noNamespaceSchemaLocation="/xml/plants.xsd"
-        xmlns="/xml/plants.xsd"
+<plants xsi:schemaLocation="http://www.example.com/plants plants.xsd"
+        xmlns="http://www.example.com/plants"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 >
 
