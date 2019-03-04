@@ -1,25 +1,37 @@
 package com.epam.javast.greenhouse.model.api;
 
+import com.epam.javast.greenhouse.model.entity.Flower;
 import com.epam.javast.greenhouse.model.entity.GrowingTips;
+import com.epam.javast.greenhouse.model.entity.Vegetable;
 import com.epam.javast.greenhouse.model.entity.VisualParameter;
 import com.epam.javast.greenhouse.model.enumeration.*;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
-@XmlRootElement
-@XmlType(propOrder = {"id", "name", "soil", "origin", "visualParameter", "growingTips", "reproduction"})
-public  class Plant {
+@XmlRootElement(namespace = "http://www.example.com/plants", name = "plant")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "plant", namespace = "http://www.example.com/plants",
+        propOrder = {"id", "name", "soil", "origin", "visualParameter", "growingTips", "reproduction"})
+@XmlSeeAlso({
+        Flower.class,
+        Vegetable.class
+})
+public abstract class Plant {
 
+    @XmlAttribute(name = "id")
     private int id;
+    @XmlAttribute(name = "name")
     private String name;
+    @XmlElement(name = "soil", namespace = "http://www.example.com/plants")
     private Soil soil;
+    @XmlElement(name = "origin", namespace = "http://www.example.com/plants")
     private Origin origin;
+    @XmlElement(name = "visual-parameter", namespace = "http://www.example.com/plants")
     private VisualParameter visualParameter;
+    @XmlElement(name = "growing-tips", namespace =  "http://www.example.com/plants")
     private GrowingTips growingTips;
+    @XmlElement(name = "reproduction", namespace =  "http://www.example.com/plants")
     private Reproduction reproduction;
 
 
@@ -41,7 +53,6 @@ public  class Plant {
         return id;
     }
 
-    @XmlAttribute
     public void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("Plant Id has to be greater than 0");
@@ -53,7 +64,6 @@ public  class Plant {
         return name;
     }
 
-    @XmlAttribute
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Plant name can not be null or without name");
@@ -65,7 +75,6 @@ public  class Plant {
         return soil;
     }
 
-    @XmlElement
     public void setSoil(Soil soil) {
         if (soil == null) {
             throw new IllegalArgumentException("Plant Soil can not be null");
@@ -78,7 +87,6 @@ public  class Plant {
         return origin;
     }
 
-    @XmlElement
     public void setOrigin(Origin origin) {
         if (origin == null) {
             throw new IllegalArgumentException("Plant Origin can not be null");
@@ -90,7 +98,6 @@ public  class Plant {
         return visualParameter;
     }
 
-    @XmlElement
     public void setVisualParameter(VisualParameter visualParameter) {
         if (visualParameter == null) {
             throw new IllegalArgumentException("Plant Visual Parameter can not be null");
@@ -102,7 +109,6 @@ public  class Plant {
         return growingTips;
     }
 
-    @XmlElement
     public void setGrowingTips(GrowingTips growingTips) {
         if (growingTips == null) {
             throw new IllegalArgumentException("Plant Growing Tips can not be null");
@@ -114,7 +120,6 @@ public  class Plant {
         return reproduction;
     }
 
-    @XmlElement
     public void setReproduction(Reproduction reproduction) {
         if (reproduction == null) {
             throw new IllegalArgumentException("Plant Reproduction can not be null");

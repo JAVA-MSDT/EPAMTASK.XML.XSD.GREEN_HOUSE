@@ -1,10 +1,21 @@
 package com.epam.javast.greenhouse.model.entity;
 
+import javax.xml.bind.annotation.*;
 
+@XmlRootElement(name = "growing-tips", namespace = "http://www.example.com/plants")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "growing-tips", propOrder = {
+        "temperature",
+        "isPhotophilous",
+        "waterAmount"
+})
 public class GrowingTips {
 
+    @XmlElement(name = "temperature", namespace = "http://www.example.com/plants")
     private double temperature;
+    @XmlElement(name = "is-photophilous", namespace = "http://www.example.com/plants")
     private boolean isPhotophilous;
+    @XmlElement(name = "water-amount", namespace = "http://www.example.com/plants")
     private int waterAmount;
 
     public GrowingTips() {

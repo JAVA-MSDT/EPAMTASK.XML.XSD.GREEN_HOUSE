@@ -93,8 +93,8 @@
             <enumeration value="europe"/>
             <enumeration value="asia"/>
             <enumeration value="africa"/>
-            <enumeration value="north america"/>
-            <enumeration value="south america"/>
+            <enumeration value="north-america"/>
+            <enumeration value="south-america"/>
         </restriction>
     </simpleType>
 
@@ -127,7 +127,7 @@
         <restriction base="string">
             <enumeration value="podzol"/>
             <enumeration value="ground"/>
-            <enumeration value="sod prodzolic"/>
+            <enumeration value="sod-podzolic"/>
         </restriction>
     </simpleType>
 

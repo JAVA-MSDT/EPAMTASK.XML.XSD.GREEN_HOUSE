@@ -2,10 +2,21 @@ package com.epam.javast.greenhouse.model.entity;
 
 import com.epam.javast.greenhouse.model.enumeration.Color;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name="visual-parameter", namespace = "http://www.example.com/plants")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name="visual-parameter", namespace = "http://www.example.com/plants", propOrder = {
+        "stalkColor", "leafColor", "averageSize"
+})
+
 public class VisualParameter {
 
+    @XmlElement(name = "stalk-color", namespace =  "http://www.example.com/plants")
     private Color stalkColor;
+    @XmlElement(name = "leaf-color", namespace =  "http://www.example.com/plants" )
     private Color leafColor;
+    @XmlElement(name = "average-size", namespace =  "http://www.example.com/plants")
     private double averageSize;
 
     public VisualParameter() {

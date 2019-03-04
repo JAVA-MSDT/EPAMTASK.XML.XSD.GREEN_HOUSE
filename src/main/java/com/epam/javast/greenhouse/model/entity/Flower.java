@@ -6,11 +6,18 @@ import com.epam.javast.greenhouse.model.enumeration.Reproduction;
 import com.epam.javast.greenhouse.model.enumeration.Size;
 import com.epam.javast.greenhouse.model.enumeration.Soil;
 
+import javax.xml.bind.annotation.*;
 
+@XmlRootElement(name="flower", namespace = "http://www.example.com/plants")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "flower", namespace = "http://www.example.com/plants")
 public class Flower extends Plant {
 
+    @XmlElement(name = "petals-quantity", namespace = "http://www.example.com/plants")
     private int petalsQuantity;
+    @XmlElement(name = "size", namespace = "http://www.example.com/plants")
     private Size size;
+    @XmlElement(name = "is-poison", namespace =  "http://www.example.com/plants")
     private boolean isPoison;
 
     public Flower() {

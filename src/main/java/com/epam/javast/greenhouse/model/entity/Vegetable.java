@@ -6,17 +6,19 @@ import com.epam.javast.greenhouse.model.enumeration.Reproduction;
 import com.epam.javast.greenhouse.model.enumeration.Season;
 import com.epam.javast.greenhouse.model.enumeration.Soil;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
-@XmlRootElement
-@XmlType(propOrder = {"weight", "season", "isSweet"})
+@XmlRootElement(name = "vegetable", namespace = "http://www.example.com/plants")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "vegetable", namespace = "http://www.example.com/plants", propOrder = {"weight", "season", "isSweet"})
 
 public class Vegetable extends Plant {
 
+    @XmlElement(name = "weight", namespace =  "http://www.example.com/plants")
     private double weight;
+    @XmlElement(name = "season", namespace =  "http://www.example.com/plants")
     private Season season;
+    @XmlElement(name = "is-sweet", namespace =  "http://www.example.com/plants")
     private boolean isSweet;
 
     public Vegetable() {
@@ -35,7 +37,6 @@ public class Vegetable extends Plant {
         return weight;
     }
 
-    @XmlElement
     public void setWeight(double weight) {
         if(weight <= 0){
             throw new IllegalArgumentException("Vegetable weight can not be less than or equal 0");
@@ -47,7 +48,6 @@ public class Vegetable extends Plant {
         return season;
     }
 
-    @XmlElement
     public void setSeason(Season season) {
         if(season == null){
             throw new IllegalArgumentException("Vegetable season can not be null");
@@ -59,7 +59,6 @@ public class Vegetable extends Plant {
         return isSweet;
     }
 
-    @XmlElement
     public void setSweet(boolean sweet) {
         isSweet = sweet;
     }
