@@ -42,6 +42,7 @@ public class PlantHandler extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
         if (FLOWER.getValue().equalsIgnoreCase(localName) || VEGETABLE.getValue().equalsIgnoreCase(localName)) {
+
             if (FLOWER.getValue().equalsIgnoreCase(localName)) {
                 plant = new Flower();
                 visualParameter = new VisualParameter();

@@ -38,7 +38,7 @@ public class XmlStaxParserTest {
     }
 
     @Test
-    public void domParserPlantListPass(){
+    public void staxParserPlantListPass(){
         flower = plantObjectHolder.getValidFlower();
         vegetable = plantObjectHolder.getValidVegetable();
         testingPlant.add(flower);
@@ -50,7 +50,7 @@ public class XmlStaxParserTest {
 
 
     @Test
-    public void domParserPlantListFail(){
+    public void staxParserPlantListFail(){
         flower = plantObjectHolder.getInValidFlower();
         vegetable = plantObjectHolder.getInValidVegetable();
         testingPlant.add(flower);

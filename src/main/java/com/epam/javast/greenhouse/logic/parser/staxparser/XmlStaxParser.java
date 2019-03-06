@@ -35,7 +35,6 @@ public class XmlStaxParser implements XmlParser {
     private VisualParameter visualParameter;
     private GrowingTips growingTips;
     private List<Plant> plantList;
-    private String valueHolder;
     private FileInputStream inputStream;
 
     public XmlStaxParser() {
@@ -92,12 +91,12 @@ public class XmlStaxParser implements XmlParser {
                     name = reader.getLocalName();
                     switch (Objects.requireNonNull(findByValue(name))) {
                         case SOIL:
-                            valueHolder = getValueFromElement(reader);
-                            plant.setSoil(Soil.valueOf(StringFromEnum.getString(Soil.values(), valueHolder)));
+                            String soil = getValueFromElement(reader);
+                            plant.setSoil(Soil.valueOf(StringFromEnum.getString(Soil.values(), soil)));
                             break;
                         case ORIGIN:
-                            valueHolder = getValueFromElement(reader);
-                            plant.setOrigin(Origin.valueOf(StringFromEnum.getString(Origin.values(), valueHolder)));
+                            String origin = getValueFromElement(reader);
+                            plant.setOrigin(Origin.valueOf(StringFromEnum.getString(Origin.values(), origin)));
                             break;
                         case VISUAL_PARAMETER:
                             plant.setVisualParameter(getVisualParameter(reader));
@@ -106,32 +105,32 @@ public class XmlStaxParser implements XmlParser {
                             plant.setGrowingTips(getGrowingTips(reader));
                             break;
                         case REPRODUCTION:
-                            valueHolder = getValueFromElement(reader);
-                            plant.setReproduction(Reproduction.valueOf(StringFromEnum.getString(Reproduction.values(), valueHolder)));
+                            String reproduction = getValueFromElement(reader);
+                            plant.setReproduction(Reproduction.valueOf(StringFromEnum.getString(Reproduction.values(), reproduction)));
                             break;
                         case PETALS_QUANTITY:
-                            valueHolder = getValueFromElement(reader);
-                            ((Flower) plant).setPetalsQuantity(Integer.parseInt(valueHolder));
+                            String petalsQuantity = getValueFromElement(reader);
+                            ((Flower) plant).setPetalsQuantity(Integer.parseInt(petalsQuantity));
                             break;
                         case SIZE:
-                            valueHolder = getValueFromElement(reader);
-                            ((Flower) plant).setSize(Size.valueOf(StringFromEnum.getString(Size.values(), valueHolder)));
+                            String size = getValueFromElement(reader);
+                            ((Flower) plant).setSize(Size.valueOf(StringFromEnum.getString(Size.values(), size)));
                             break;
                         case IS_POISON:
-                            valueHolder = getValueFromElement(reader);
-                            ((Flower) plant).setPoison(Boolean.parseBoolean(valueHolder));
+                            String isPoison = getValueFromElement(reader);
+                            ((Flower) plant).setPoison(Boolean.parseBoolean(isPoison));
                             break;
                         case WEIGHT:
-                            valueHolder = getValueFromElement(reader);
-                            ((Vegetable) plant).setWeight(Double.parseDouble(valueHolder));
+                            String weight = getValueFromElement(reader);
+                            ((Vegetable) plant).setWeight(Double.parseDouble(weight));
                             break;
                         case SEASON:
-                            valueHolder = getValueFromElement(reader);
-                            ((Vegetable) plant).setSeason(Season.valueOf(StringFromEnum.getString(Season.values(), valueHolder)));
+                            String season = getValueFromElement(reader);
+                            ((Vegetable) plant).setSeason(Season.valueOf(StringFromEnum.getString(Season.values(), season)));
                             break;
                         case IS_SWEET:
-                            valueHolder = getValueFromElement(reader);
-                            ((Vegetable) plant).setSweet(Boolean.parseBoolean(valueHolder));
+                            String isSweet = getValueFromElement(reader);
+                            ((Vegetable) plant).setSweet(Boolean.parseBoolean(isSweet));
 
                             break;
                     }
@@ -188,12 +187,12 @@ public class XmlStaxParser implements XmlParser {
                     name = reader.getLocalName();
                     switch (Objects.requireNonNull(findByValue(name))) {
                         case STALK_COLOR:
-                            valueHolder = getValueFromElement(reader);
-                            visualParameter.setStalkColor(Color.valueOf(StringFromEnum.getString(Color.values(), valueHolder)));
+                            String stalkColor = getValueFromElement(reader);
+                            visualParameter.setStalkColor(Color.valueOf(StringFromEnum.getString(Color.values(), stalkColor)));
                             break;
                         case LEAF_COLOR:
-                            valueHolder = getValueFromElement(reader);
-                            visualParameter.setLeafColor(Color.valueOf(StringFromEnum.getString(Color.values(), valueHolder)));
+                            String leafColor = getValueFromElement(reader);
+                            visualParameter.setLeafColor(Color.valueOf(StringFromEnum.getString(Color.values(), leafColor)));
                             break;
                         case AVERAGE_SIZE:
                             visualParameter.setAverageSize(Double.parseDouble(getValueFromElement(reader)));
